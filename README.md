@@ -1,5 +1,5 @@
 # Block
-Blockchain for educational purposes, maybe scale it to something larger in the future. Plan on adding Scrypt in the future instead of sha256.
+Blockchain has been getting a lot of popularity lately as people see it as the "future" of banking. This repo is exactly that. Implementing a blockchain with Flask and then plan on switching sha256 out with Scrypt(algo LTC uses; very efficient) and then scale it up to something bigger at some point. Reading material papers on the algorithms in play and the first paper release on bitcoin and the brains behind it.
 
 Reading material:
 - https://bitcoin.org/bitcoin.pdf
