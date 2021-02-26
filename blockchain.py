@@ -3,10 +3,7 @@ import json
 from time import time
 from uuid import uuid4
 from flask import Flask
-from webservices import test_page
-
-app = Flask(__name__)
-app.register_blueprint(test_page)
+from API import app_page
 
 #TODO: Implement Scrypt after up and runnign with sha256
 #https://hackernoon.com/learn-blockchains-by-building-one-117428612f46
@@ -18,7 +15,13 @@ Proof algorithm:
 https://en.wikipedia.org/wiki/Hashcash?ref=hackernoon.com
 '''
 
+app = Flask(__name__)
+app.register_blueprint(app_page)
+
+node_identifer = str(uuid4()).replace('-','')
+
 class Blockchain(object):
+ # blockchain = BLC()
 
   def __init__(self):
     self.chain = []
