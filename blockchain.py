@@ -2,16 +2,32 @@ import hashlib
 import json
 from time import time
 from uuid import uuid4
+from flask import Flask
+from webservices import test_page
 
+app = Flask(__name__)
+app.register_blueprint(test_page)
+
+#TODO: Implement Scrypt after up and runnign with sha256
 #https://hackernoon.com/learn-blockchains-by-building-one-117428612f46
 #creates empty lists for constructor
+'''
+Proof algorithm:
+- find a number that is p, such that hash(pp) has 4 leading zeros and where p is the previous p
+- p represents the previous proof, also p is considered the new proof
+https://en.wikipedia.org/wiki/Hashcash?ref=hackernoon.com
+'''
+
 class Blockchain(object):
-  '''
-  Proof algorithm:
-  - find a number that is p, such that hash(pp) has 4 leading zeros and where p is the previous p
-  - p represents the previous proof, also p is considered the new proof
-  https://en.wikipedia.org/wiki/Hashcash?ref=hackernoon.com
-  '''
+
+  def __init__(self):
+    self.chain = []
+    self.current_transactions = []
+ 
+    #genesis block -> make sure there are no previous predecessors
+    self.new_block(previous_hash = 1, proof = 100)
+
+
 def proof(self,last_proof):
 
       proof = 0
@@ -19,18 +35,11 @@ def proof(self,last_proof):
         proof += 1
       return proof
 
-  #validate the proof is correct
+#validate the proof is correct
 def validate_proof(last_proof,proof):
       guess = f'{last_proof}{proof}'.encode()
       guess_hash = hashlib.sha256(guess).hexdigest()
       return guess_hash[:4] == "0000"
-
-def __init__(self):
-  self.chain = []		
-  self.current_transactions = []
-		
-		#genesis block -> make sure there are no previous predecessors
-  self.new_block(previous_hash = 1, proof = 100)
 	
 def new_block(self):
 #parameters for each block that is created
@@ -56,8 +65,6 @@ def new_transaction(self):
 
   return self.last_block['index']+1
 
-  #TODO: implement scrypt instead of sha256 after up and running
-@staticmethod
 def hash(block):
   block_string = json.dumps(block,sort_keys=True).encode()
   return hashlib.sha256(block_string).hexdigest()
