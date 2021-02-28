@@ -10,8 +10,10 @@ from flask import Flask, request
 Proof algorithm:
 - find a number that is p, such that hash(pp) has 4 leading zeros and where p is the previous p
 - p represents the previous proof, also p is considered the new proof
-https://en.wikipedia.org/wiki/Hashcash?ref=hackernoon.com
 '''
+# Help me get started: 
+# https://hackernoon.com/learn-blockchains-by-building-one-117428612f46
+# https://www.activestate.com/blog/how-to-build-a-blockchain-in-python/
 
 app = Flask(__name__)
 #app.register_blueprint(app_page)
