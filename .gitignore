@@ -3,3 +3,5 @@ __pycache__/API.cpython-38.pyc
 __pycache__/blockchain.cpython-38.pyc
 .DS_Store
 .blockchain.py.swo
+__pycache__/__init__.cpython-38.pyc
+__pycache__/test.cpython-38.pyc
