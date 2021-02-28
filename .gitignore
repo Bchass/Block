@@ -2,3 +2,4 @@
 __pycache__/API.cpython-38.pyc
 __pycache__/blockchain.cpython-38.pyc
 .DS_Store
+.blockchain.py.swo
