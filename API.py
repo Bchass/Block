@@ -1,9 +1,21 @@
-from flask import Blueprint,jsonify,request
-import blockchain as BC
-from .blockchain import Blockchain as BC
+import The_Block
+import json
+from flask import Blueprint
+
+block_chain = Blueprint('block_chain',__name__)
+
+@block_chain.route('/chain',methods=['GET'])
+def get_chain():
+    chain_data = []
+    for block in The_Block.blockchain.chain:
+      chain_data.append(block.__dict__)
+    return json.dumps({"length": len(chain_data),
+                       "chain": chain_data})
+
+
 
 # This will all be reworked
-
+'''
 app_page = Blueprint('app_page',__name__)
 
 @app_page.route('/mine',methods=['GET'])
@@ -52,3 +64,4 @@ def chain():
         'length':len(BC.chain)
         }
     return jsonify(response),200
+  '''
