@@ -57,16 +57,6 @@ class Blockchain:
 
     #Check to make sure proof is valid
     def init_block(self,block,proof,previous_hash=None):
-        '''
-        self.previous_hash = self.straggler.hash
-        if self.previous_hash != block.previous_hash:
-            return False
-        elif self.previous_hash != self.valid_proof(block,proof):
-            return False
-        block.hash = proof
-        self.chain.append(block)
-        return True
-        '''
         self.init_block(previous_hash=1, proof=100)
         block = {
            'index': len(self.chain) + 1,
