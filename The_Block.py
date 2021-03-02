@@ -1,6 +1,6 @@
 import hashlib
 import json
-import time
+from time import time
 from uuid import uuid4
 from flask import Flask
 from api import block_chain
@@ -25,7 +25,7 @@ class Block:
         self.index = index
         self.transactions = transactions
         self.timestamp = timestamp
-        self.previous_hash = previous_hash
+        #self.previous_hash = previous_hash
         self.nonce = 0
 
     def hash(self):
@@ -37,13 +37,13 @@ class Blockchain:
     difficulty = 2
 
     def __init__(self):
-        self.unknown_transactions = []
+        self.current_transactions = []
         self.chain = []
         self.genesis_block()
 
     #Make sure there aren't any predecessors before 0, genesis block starts at 0 and so does previous_hash which makes it a valid hash
     def genesis_block(self):
-        genesis_block = Block(0, [], time.time(), "0")
+        genesis_block = Block(0, [], time(), "0")
         genesis_block.hash = genesis_block.hash()
         self.chain.append(genesis_block)
 
@@ -56,7 +56,8 @@ class Blockchain:
         block_hash == block.hash())
 
     #Check to make sure proof is valid
-    def init_block(self,block,proof):
+    def init_block(self,block,proof,previous_hash=None):
+        '''
         self.previous_hash = self.straggler.hash
         if self.previous_hash != block.previous_hash:
             return False
@@ -65,7 +66,21 @@ class Blockchain:
         block.hash = proof
         self.chain.append(block)
         return True
-    
+        '''
+        self.init_block(previous_hash=1, proof=100)
+        block = {
+           'index': len(self.chain) + 1,
+           'timestamp': time(),
+           'transactions': self.current_transactions,
+           'proof': proof,
+           'previous_hash': previous_hash or self.hash(self.chain[-1]),
+        }
+        
+        #Reset the transactions
+        self.current_transactions = []
+        self.chain.append(block)
+        return block
+
     #Proof of hash
     def proof(block):
         block.nonce = 0
@@ -76,21 +91,28 @@ class Blockchain:
         return hash
     
     #Create new transactions
-    def new_transactions(self,transaction):
-        self.unknown_transactions.append(transaction)
+    def new_transactions(self,sender,recipient,amount):
+        self.current_transactions.append({
+            'sender': sender,
+            'recipient': recipient,
+            'amount': amount,
+        })
+
+        return self.straggler['index'] + 1
     
     #Mine a Block
     def mine(self):
-        if not self.unknown_transactions:
+        if not self.current_transactions:
             return False
         straggler = self.straggler
         new_block = Block(index = straggler.index+1,
-                          transactions=self.unknown_transactions,
-                          timestamp=time.time(),
+                          transactions=self.current_transactions,
+                          timestamp=time(),
                           previous_hash=straggler.hash)
         proof = self.proof(new_block)
         self.init_block(new_block,proof)
-        self.unknown_transactions = []
+        self.current_transactions = []
         return new_block.index
 
+#Set variable so the class can be used in Flask file
 blockchain = Blockchain()
