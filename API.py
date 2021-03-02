@@ -1,6 +1,6 @@
 import The_Block
 import json
-from flask import Blueprint
+from flask import Blueprint, jsonify, request
 
 block_chain = Blueprint('block_chain',__name__)
 
@@ -13,10 +13,21 @@ def get_chain():
                        "chain": chain_data})
 
 
+@block_chain.route('/transactions/new', methods=['POST'])
+def new_transactions():
+    values = request.get_json()
+    index = The_Block.blockchain.new_transactions(values['sender'],values['recipient'],values['amount'])
+
+    response = {
+        'message': f'Transaction be added to Block {index}'
+    }
+    return jsonify(response),201
+
+
 
 # This will all be reworked
 '''
-app_page = Blueprint('app_page',__name__)
+app_page = Blueprint('app_page',__name__
 
 @app_page.route('/mine',methods=['GET'])
 def mine():
