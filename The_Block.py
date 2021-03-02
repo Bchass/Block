@@ -3,7 +3,7 @@ import json
 from time import time
 from uuid import uuid4
 from flask import Flask
-from api import block_chain
+from API import block_chain
 
 #TODO: Add in mine function for Flask and implement Consenus algo for a decentralized network
 '''
