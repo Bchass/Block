@@ -5,7 +5,7 @@ from uuid import uuid4
 from flask import Flask
 from api import block_chain
 
-#TODO: Add in mine and transaction functions and implement Consenus algo for a decentralized network
+#TODO: Add in mine function for Flask and implement Consenus algo for a decentralized network
 '''
 Proof algorithm:
 - find a number that is p, such that hash(pp) has 4 leading zeros and where p is the previous p
@@ -25,7 +25,7 @@ class Block:
         self.index = index
         self.transactions = transactions
         self.timestamp = timestamp
-        #self.previous_hash = previous_hash
+        self.previous_hash = previous_hash
         self.nonce = 0
 
     def hash(self):
@@ -89,20 +89,6 @@ class Blockchain:
         })
 
         return self.straggler['index'] + 1
-    
-    #Mine a Block
-    def mine(self):
-        if not self.current_transactions:
-            return False
-        straggler = self.straggler
-        new_block = Block(index = straggler.index+1,
-                          transactions=self.current_transactions,
-                          timestamp=time(),
-                          previous_hash=straggler.hash)
-        proof = self.proof(new_block)
-        self.init_block(new_block,proof)
-        self.current_transactions = []
-        return new_block.index
 
 #Set variable so the class can be used in Flask file
 blockchain = Blockchain()
