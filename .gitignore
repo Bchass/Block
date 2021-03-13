@@ -16,3 +16,16 @@ __pycache__/The_Block.cpython-38.pyc
 .The_Block.py.swp
 
 .api.py.swo
+.swp
+new_layout/__pycache__/api.cpython-38.pyc
+.gitignore
+test/.main.py.swo
+.gitignore
+test/API.py
+test/main.py
+test/test.py
+test/__pycache__/API.cpython-38.pyc
+test/__pycache__/main.cpython-38.pyc
+test/__pycache__/test.cpython-38.pyc
+test/.main.py.swp
+new_layout/__pycache__/blockchain.cpython-38.pyc
