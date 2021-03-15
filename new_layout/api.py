@@ -1,5 +1,5 @@
 import blockchain
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify
 
 blockchain_blueprint = Blueprint('blockchain_blueprint',__name__)
 
@@ -23,7 +23,7 @@ def mine_block():
     recipient=blockchain.node_identifer,
     amount = 1
   )
-  previous_hash = blockchain.bc.hash(last_block)
+  previous_hash = blockchain.block.hash(last_block)
   block = blockchain.bc.create_block(proof,previous_hash)
 
   response = {
