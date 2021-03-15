@@ -20,18 +20,21 @@ app.register_blueprint(blockchain_blueprint)
 
 node_identifer = str(uuid4()).replace('-','')
 
-class Blockchain:
-     def __init__(self):
-       self.chain = []
-       self.current_transactions = []
-
-       self.create_block(previous_hash='1', proof=100)
-     
-     # Hash the block
+class Block:
+     # Hash for block
      @staticmethod
      def hash(block):
          block_string = json.dumps(block,sort_keys=True).encode()
          return hashlib.sha256(block_string).hexdigest()
+
+class Blockchain:
+
+     def __init__(self):
+       self.chain = []
+       self.current_transactions = []
+
+       # This is how the proof is determined from calling create_block
+       self.create_block(previous_hash='1', proof=100)
      
      # Validate the proof
      @staticmethod
@@ -57,7 +60,7 @@ class Blockchain:
      # Proof algo, explained at the top
      def PoW(self, last_block):
         last_proof = last_block['proof']
-        last_hash = self.hash(last_block)
+        last_hash = Block.hash(last_block)
 
         proof = 0
         while self.valid_proof(last_proof, proof, last_hash) is False:
@@ -80,5 +83,7 @@ class Blockchain:
      @property
      def last_block(self):
           return self.chain[-1]
-
+          
+# Classes assigned to vars
 bc = Blockchain()
+block = Block()
