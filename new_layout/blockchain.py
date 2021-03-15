@@ -1,5 +1,6 @@
 import hashlib
 import json
+import random
 from time import time
 from uuid import uuid4
 from flask import Flask
@@ -21,11 +22,14 @@ app.register_blueprint(blockchain_blueprint)
 node_identifer = str(uuid4()).replace('-','')
 
 class Block:
-     # Hash for block
-     @staticmethod
-     def hash(block):
-         block_string = json.dumps(block,sort_keys=True).encode()
-         return hashlib.sha256(block_string).hexdigest()
+
+  @staticmethod
+  def hash(block):
+    block_string = json.dumps(block,sort_keys=True).encode()
+    return hashlib.sha256(block_string).hexdigest()
+
+  # Randomize number each time for genesis_block
+  genesis_block = random.randint(0,10)
 
 class Blockchain:
 
@@ -34,8 +38,8 @@ class Blockchain:
        self.current_transactions = []
 
        # This is how the proof is determined from calling create_block
-       self.create_block(previous_hash='1', proof=100)
-     
+       self.create_block(previous_hash=Block.genesis_block,proof=100)
+
      # Validate the proof
      @staticmethod
      def valid_proof(last_proof,proof,last_hash):
@@ -50,7 +54,7 @@ class Blockchain:
            'timestamp':time(),
            'transactions':self.current_transactions,
            'proof':proof,
-           'previous_hash':previous_hash or self.hash(self.chain[-1]),
+           'previous_hash':Block.hash(previous_hash) or self.hash(self.chain[-1]),
         }
 
         self.current_transactions = []
