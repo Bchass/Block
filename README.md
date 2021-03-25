@@ -10,3 +10,14 @@ Reading material:
 - Scrypt: https://www.tarsnap.com/scrypt/scrypt.pdf
 - PoW: https://en.wikipedia.org/wiki/Hashcash?ref=hackernoon.com
 - Consensus: https://www.researchgate.net/publication/330880555_Consensus_Algorithms_in_Blockchain_Comparative_Analysis_Challenges_and_Opportunities
+
+-----
+#### Interacting with the Blockchain
+
+- Calling the chain: `curl http://127.0.0.1:5000/chain`
+- Mining a block: `curl http://127.0.0.1:5000/mine`
+- Adding a transaction: `curl -X POST -H "Content-Type: application/json" -d '{
+ "sender": "Enter address",
+ "recipient": "Enter address", 
+ "amount": 5
+}' "http://localhost:5000/transactions/new"`
