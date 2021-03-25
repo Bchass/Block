@@ -29,7 +29,7 @@ class Block:
     return hashlib.sha256(block_string).hexdigest()
 
   # Randomize number each time for genesis_block
-  genesis_block = random.randint(0,10)
+  genesis_block = random.randint(0,99999)
 
 class Blockchain:
 
