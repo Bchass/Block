@@ -1,12 +1,13 @@
-import hashlib
 import json
+import hashlib
 import random
 from time import time
 from uuid import uuid4
 from flask import Flask
 from api import blockchain_blueprint
+from passlib.hash import argon2
 
-#TODO: implement Consenus algo for a decentralized network and implement scrpyt algo to replace sha256
+#TODO: implement Consenus algo for a decentralized network, figure out a new way to validate proof with Argon2
 '''
 Proof algorithm:
 - find a number that is p, such that hash(pp) has 4 leading zeros and where p is the previous p
@@ -26,7 +27,7 @@ class Block:
   @staticmethod
   def hash(block):
     block_string = json.dumps(block,sort_keys=True).encode()
-    return hashlib.sha256(block_string).hexdigest()
+    return argon2.hash(block_string)
 
   # Randomize number each time for genesis_block
   genesis_block = random.randint(0,99999)
