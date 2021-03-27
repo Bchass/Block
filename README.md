@@ -1,13 +1,13 @@
 # Block
-Blockchain has been getting a lot of popularity lately as people see it as the "future" of banking. This repo is exactly that. Implementing a blockchain with Flask and then plan on switching sha256 out with Scrypt(algo LTC uses; very efficient) and then scale it up to something bigger at some point maybe? Reading material includes papers on the algorithms in play and the first paper release on bitcoin and the brains behind it.
+Blockchain has been getting a lot of popularity lately as people see it as the "future" of banking. This repo is exactly that. Implemented a blockchain with Flask and using Argon2d for hashing (much better then Scrypt). There are three flavors of Argon2d, though in the original paper (linked below), it's suggested Argon2d is recommended for crypto, but Argon2id is being used in this blockchain as it's a hybrid version and protects against side-channel attacks. Reading material includes papers on the algorithms in play and the first paper release on bitcoin and the brains behind it.
 
-old_layout contains exactly how it's desribed, a glory hole of a mess of a layout with just a ton of bugs
+old_layout contains exactly how it's described, a glory hole of a mess of a layout with just a ton of bugs
 
 new_layout contains a cleaned up space with no more bugs present
 
 Reading material:
 - Bitcoin: https://bitcoin.org/bitcoin.pdf
-- Scrypt: https://www.tarsnap.com/scrypt/scrypt.pdf
+- Argon2d: https://www.password-hashing.net/argon2-specs.pdf
 - PoW: https://en.wikipedia.org/wiki/Hashcash?ref=hackernoon.com
 - Consensus: https://www.researchgate.net/publication/330880555_Consensus_Algorithms_in_Blockchain_Comparative_Analysis_Challenges_and_Opportunities
 
