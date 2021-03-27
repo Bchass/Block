@@ -1,5 +1,5 @@
 # Block
-Blockchain has been getting a lot of popularity lately as people see it as the "future" of currency. This repo is exactly that. Implemented a blockchain with Flask and using Argon2d for hashing (much better then Scrypt). There are three flavors of Argon2d, though in the original paper (linked below), it's suggested Argon2d is recommended for crypto, but Argon2id is being used in this blockchain as it's a hybrid version and protects against side-channel attacks. Reading material includes papers on the algorithms in play and the first paper release on bitcoin and the brains behind it.
+Blockchain has been getting a lot of popularity lately as people see it as the "future" of currency. This repo is exactly that. Implemented a blockchain with Flask and using Argon2d for hashing (much better then Scrypt). There are three flavors of Argon2, though in the original paper (linked below), it's suggested Argon2d is recommended for crypto, but Argon2id is being used in this blockchain as it's a hybrid version. Reading material includes papers on the algorithms in play and the first paper release on bitcoin and the brains behind it.
 
 old_layout contains exactly how it's described, a glory hole of a mess of a layout with just a ton of bugs
 
