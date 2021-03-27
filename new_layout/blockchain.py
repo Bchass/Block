@@ -2,10 +2,12 @@ import json
 import hashlib
 import random
 from time import time
+from typing import Type
 from uuid import uuid4
+import argon2
 from flask import Flask
 from api import blockchain_blueprint
-from passlib.hash import argon2
+from argon2 import PasswordHasher
 
 #TODO: implement Consenus algo for a decentralized network, figure out a new way to validate proof with Argon2
 '''
@@ -27,8 +29,9 @@ class Block:
   @staticmethod
   def hash(block):
     block_string = json.dumps(block,sort_keys=True).encode()
-    return argon2.hash(block_string)
-
+    a2 = PasswordHasher()
+    return a2.hash(block_string)
+   
   # Randomize number each time for genesis_block
   genesis_block = random.randint(0,99999)
 
