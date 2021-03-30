@@ -21,3 +21,4 @@ Reading material:
  "recipient": "Enter address", 
  "amount": 5
 }' "http://localhost:5000/transactions/new"`
+- Resolve conflicts: `curl http://127.0.0.1:5000/nodes/resolve`
