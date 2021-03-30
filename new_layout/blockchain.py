@@ -6,14 +6,14 @@ from api import blockchain_blueprint
 from argon2 import PasswordHasher
 from urllib.parse import urlparse
 
-#TODO: Major: implement Consenus algo for a decentralized network, Minor: Return raw hash for Argon2, maybe validate proof with Argon2?
+#TODO: Major: N/A, Minor: Return raw hash for Argon2, maybe validate proof with Argon2?
 '''
 Proof algorithm:
 - find a number that is p, such that hash(pp) has 4 leading zeros and where p is the previous p
 - p represents the previous proof, also p is considered the new proof
 '''
 # Help me get started: 
-# https://hackernoon.com/learn-blockchains-by-building-one-117428612f46
+# https://hackernoon.com/learn-blockchains-by-building-one-117428612f46 (Improving slowly upon this blockchain)
 # https://www.activestate.com/blog/how-to-build-a-blockchain-in-python/
 
 app = Flask(__name__)
