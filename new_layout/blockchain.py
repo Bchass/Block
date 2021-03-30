@@ -4,6 +4,7 @@ from uuid import uuid4
 from flask import Flask
 from api import blockchain_blueprint
 from argon2 import PasswordHasher
+from urllib.parse import urlparse
 
 #TODO: Major: implement Consenus algo for a decentralized network, Minor: Return raw hash for Argon2, maybe validate proof with Argon2?
 '''
@@ -53,7 +54,7 @@ class Blockchain:
       if block['previous_hash'] != self.hash(last_block):
         return False
       # Check PoW
-      if not self.valid_proof(last_block['proof'], block['proof']):
+      if not self.valid_proof(last_block['proof'], block['proof'], block['previous_hash']):
         return False
 
       last_block = block
@@ -77,11 +78,21 @@ class Blockchain:
           max_len = length
           new_chain = chain
 
-        if new_chain:
-          self.chain = new_chain
-          return True
-        return False
-
+      if new_chain:
+        self.chain = new_chain
+        return True
+      return False
+  '''
+  # Add new nodes
+  def new_node(self, address):
+    parsed_url = urlparse(address)
+    if parsed_url.netloc:
+      self.nodes.add(parsed_url.netloc)
+    elif parsed_url.path:
+      self.nodes.add(parsed_url.path)
+    else:
+      raise ValueError('Invalid url')
+  '''
      # Validate the proof
   @staticmethod
   def valid_proof(last_proof,proof,last_hash):

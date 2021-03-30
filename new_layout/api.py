@@ -1,6 +1,7 @@
 import blockchain
 from flask import Blueprint, jsonify, request
 
+#TODO: Figure out why regestring a node is throwing 405
 
 blockchain_blueprint = Blueprint('blockchain_blueprint',__name__)
 
@@ -49,3 +50,38 @@ def transacation():
   response = {'message': f'Transaction being added to Block {index}'}
   return jsonify(response),201
 
+'''
+@blockchain_blueprint.route('/nodes/register',methods=['POST'])
+def register_nodes():
+  values = request.get_json(force=True)
+
+  nodes = values.get('nodes')
+  if nodes is None:
+    return "Error: Need a valid list of nodes", 400
+
+  for node in nodes:
+    blockchain.bc.new_node(node)
+
+  response = {
+    'message': 'Nodes have been added',
+    'Total': list(blockchain.bc.nodes),
+  }
+  return jsonify(response), 201
+'''
+
+# Resolve any conflicts with a chain
+@blockchain_blueprint.route('/nodes/resolve', methods=['GET'])
+def cs():
+  replaced = blockchain.bc.conflicts()
+
+  if replaced:
+    respone = {
+      'message': 'Chain replaced',
+      'new_chain': blockchain.bc.chain
+    }
+  else:
+      respone ={
+        'message': 'Chain is authorized',
+        'chain': blockchain.bc.chain
+      }
+      return jsonify(respone), 200
