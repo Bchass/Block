@@ -47,7 +47,7 @@ def transacation():
     return 'Missing values',400
 
   index = blockchain.bc.new_transactions(values['sender'],values['recipient'],values['amount'])
-  response = {'message': f'Transaction being added to Block {index}'}
+  response = {'message: Transaction being added to Block {}'.format(index)}
   return jsonify(response),201
 
 '''

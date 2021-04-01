@@ -4,7 +4,6 @@ from uuid import uuid4
 from flask import Flask
 from api import blockchain_blueprint
 from argon2 import PasswordHasher
-from urllib.parse import urlparse
 
 #TODO: Major: N/A, Minor: Return raw hash for Argon2, maybe validate proof with Argon2?
 '''
@@ -13,7 +12,7 @@ Proof algorithm:
 - p represents the previous proof, also p is considered the new proof
 '''
 # Help me get started: 
-# https://hackernoon.com/learn-blockchains-by-building-one-117428612f46 (Improving slowly upon this blockchain)
+# https://hackernoon.com/learn-blockchains-by-building-one-117428612f46 (Improving slowly upon this)
 # https://www.activestate.com/blog/how-to-build-a-blockchain-in-python/
 
 app = Flask(__name__)
@@ -48,8 +47,8 @@ class Blockchain:
 
     while curr_index < len(chain):
       block = chain[curr_index]
-      print(f'{last_block}')
-      print(f'Current block: {block}')
+      print('{}'.format(last_block))
+      print('{}'.format(block))
       # Check hash of block
       if block['previous_hash'] != self.hash(last_block):
         return False
@@ -68,7 +67,7 @@ class Blockchain:
     max_len = len(self.chain)
     
     for node in neighbors:
-      respone = requests.get(f'http://{node}/chain')
+      respone = requests.get('http://{0}/chain'.format(node))
       
       if respone.status_code == 200:
         length = respone.json()['length']
@@ -96,7 +95,8 @@ class Blockchain:
      # Validate the proof
   @staticmethod
   def valid_proof(last_proof,proof,last_hash):
-    guess = f'{last_proof}{proof}{last_hash}'.encode()
+    guess = '{0}{1}{2}'.format(last_proof,proof,last_hash).encode()
+    #guess = f'{last_proof}{proof}{last_hash}'.encode()
     guess_hash = hashlib.sha256(guess).hexdigest()
     return guess_hash[:4]== "0000"
 
