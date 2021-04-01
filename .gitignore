@@ -29,3 +29,9 @@ test/__pycache__/main.cpython-38.pyc
 test/__pycache__/test.cpython-38.pyc
 test/.main.py.swp
 new_layout/__pycache__/blockchain.cpython-38.pyc
+api.pyc
+blockchain.pyc
+tests/__init__.pyc
+tests/test_blockchain.pyc
+tests/__pycache__/__init__.cpython-38.pyc
+tests/__pycache__/test_blockchain.cpython-38.pyc
