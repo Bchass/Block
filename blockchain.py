@@ -25,7 +25,7 @@ class Block:
   @staticmethod
   def hash(block):
     block_string = json.dumps(block,sort_keys=True).encode()
-    a2 = PasswordHasher(type=argon2.Type.D)
+    a2 = PasswordHasher(type=argon2.Type.ID)
     return a2.hash(block_string)
 
    
@@ -93,11 +93,10 @@ class Blockchain:
     else:
       raise ValueError('Invalid url')
   '''
-     # Validate the proof
+  # Validate the proof
   @staticmethod
   def valid_proof(last_proof,proof,last_hash):
     guess = '{0}{1}{2}'.format(last_proof,proof,last_hash).encode()
-    #guess = f'{last_proof}{proof}{last_hash}'.encode()
     guess_hash = hashlib.sha256(guess).hexdigest()
     return guess_hash[:4]== "0000"
 
