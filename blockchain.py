@@ -1,4 +1,5 @@
 import json, hashlib, random, requests, argon2
+from typing import Type
 from time import time
 from uuid import uuid4
 from flask import Flask
@@ -25,7 +26,7 @@ class Block:
   @staticmethod
   def hash(block):
     block_string = json.dumps(block,sort_keys=True).encode()
-    a2 = PasswordHasher(type=argon2.Type.ID)
+    a2 = PasswordHasher(type=argon2.Type.ID, parallelism=1, time_cost=3, memory_cost=512)
     return a2.hash(block_string)
 
    
