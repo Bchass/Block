@@ -7,7 +7,7 @@ new_layout contains a cleaned up space with no more bugs present
 
 Reading material:
 - Bitcoin: https://bitcoin.org/bitcoin.pdf
-- Argon2d: https://www.password-hashing.net/argon2-specs.pdf
+- Argon2: https://www.password-hashing.net/argon2-specs.pdf
 - PoW: https://en.wikipedia.org/wiki/Hashcash?ref=hackernoon.com
 - Consensus: https://www.researchgate.net/publication/330880555_Consensus_Algorithms_in_Blockchain_Comparative_Analysis_Challenges_and_Opportunities
 
