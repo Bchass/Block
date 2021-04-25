@@ -1,12 +1,11 @@
 import json, hashlib, random, requests, argon2
-from typing import Type
 from time import time
 from uuid import uuid4
 from flask import Flask
 from api import blockchain_blueprint
 from argon2 import PasswordHasher
 
-#TODO: Major: N/A, Minor: Maybe validate proof with Argon2?
+#TODO: Major: N/A, Minor: Validate proof with Argon2, return raw hash
 '''
 Proof algorithm:
 - find a number that is p, such that hash(pp) has 4 leading zeros and where p is the previous p
@@ -26,7 +25,7 @@ class Block:
   @staticmethod
   def hash(block):
     block_string = json.dumps(block,sort_keys=True).encode()
-    a2 = PasswordHasher(type=argon2.Type.ID, parallelism=1, time_cost=3, memory_cost=512)
+    a2 = PasswordHasher(type=argon2.Type.ID, parallelism=8, time_cost=2, memory_cost=1024)
     return a2.hash(block_string)
 
    
