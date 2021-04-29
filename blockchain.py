@@ -4,7 +4,7 @@ from uuid import uuid4
 from flask import Flask
 from api import blockchain_blueprint
 from argon2 import PasswordHasher
-
+from argon2.low_level import ARGON2_VERSION, Type, core, ffi, lib
 #TODO: Major: N/A, Minor: Validate proof with Argon2, return raw hash
 '''
 Proof algorithm:
@@ -25,9 +25,37 @@ class Block:
   @staticmethod
   def hash(block):
     block_string = json.dumps(block,sort_keys=True).encode()
-    a2 = PasswordHasher(type=argon2.Type.ID, parallelism=8, time_cost=2, memory_cost=1024)
-    return a2.hash(block_string)
+    a2 = PasswordHasher(type=argon2.Type.ID, parallelism=1, time_cost=2, memory_cost=512)
+    return a2.hash(block_string) 
 
+
+  '''
+    block_string = json.dumps(block,sort_keys=True).encode()
+    pwd = block_string
+    salt = b"test_salt"
+    hash_len = 8
+
+    cout = ffi.new("uint8_t[]",hash_len)
+    cpwd = ffi.new("uint8_t[]",pwd)
+    csalt = ffi.new("uint8_t[]",salt)
+    ctx = ffi.new(
+      "argon2_context *", dict(
+      version=ARGON2_VERSION,
+      out=cout, outlen=hash_len,
+              pwd=cpwd, pwdlen=len(pwd),
+              salt=csalt, saltlen=len(salt),
+              secret=ffi.NULL, secretlen=0,
+              ad=ffi.NULL,  adlen=0,
+              t_cost=1,
+              m_cost=8,
+              lanes=1,  threads=1,
+              allocate_cbk=ffi.NULL, free_cbk=ffi.NULL,
+              flags=lib.ARGON2_DEFAULT_FLAGS,
+         )
+      )
+    out = bytes(ffi.buffer(ctx.out, ctx.outlen))
+    return(out)
+    '''
    
   # Randomize number each time for genesis_block
   genesis_block = random.randint(0,99999)

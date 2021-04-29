@@ -31,7 +31,7 @@ class TestBlock(BlockchainTestCase):
         assert Lblock['index'] == len(self.blockchain.chain)
         assert Lblock['timestamp'] != 0
         assert Lblock['proof'] == 1234
-        assert Lblock['previous_hash']
+        assert Lblock['previous_hash'] == 'xyz'
 
     def test_new_transactions(self):
         self.test_transactions()
