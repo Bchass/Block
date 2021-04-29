@@ -33,7 +33,7 @@ new_layout contains a cleaned up space with no more bugs present
 
 Results:
 -  hash_len: 16 bytes
--  memory_cost: 102400 KiB
--  parallelism: 8 threads
+-  memory_cost: 512 KiB
+-  parallelism: 1 threads
 -  time_cost: 2 iterations
--  35.5ms per password verification
+-  0.52ms for hashing
