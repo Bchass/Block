@@ -1,8 +1,9 @@
-import json, hashlib, random, requests, argon2, binascii
+import json, hashlib, random, requests, binascii, os
 from time import time
 from uuid import uuid4
 from flask import Flask
 from api import blockchain_blueprint
+from argon2.low_level import ARGON2_VERSION, Type, core, ffi, lib
 
 
 #TODO: Major: N/A, Minor: Validate proof with Argon2
@@ -22,13 +23,38 @@ node_identifer = str(uuid4()).replace('-','')
 
 class Block:
 
+  # Working off raw C data structures
   @staticmethod
   def hash(block):
    block_string = json.dumps(block,sort_keys=True).encode()
-   hash = argon2.hash_password_raw(
-      time_cost=2, memory_cost=512, parallelism=1, hash_len=16,
-      password=block_string, salt=b'some salt', type=argon2.low_level.Type.ID)
-   return (binascii.hexlify(hash).decode("utf-8",'ignore'))
+   pwd = block_string
+   size = random.randint(64,128)
+   salt = os.urandom(size)
+   hash_len = 16
+
+   cout = ffi.new("uint8_t[]",hash_len)
+   cpwd = ffi.new("uint8_t[]",pwd)
+   csalt = ffi.new("uint8_t[]",salt)
+   ctx = ffi.new(
+      "argon2_context *",dict(
+      version=ARGON2_VERSION,
+      out=cout, outlen=hash_len,
+            pwd=cpwd, pwdlen=len(pwd),
+            salt=csalt, saltlen=len(salt),
+            secret=ffi.NULL,  secretlen=0,
+            ad=ffi.NULL,  adlen=0,
+            t_cost=2,
+            m_cost=512,
+            lanes=1,  threads=1,
+            allocate_cbk=ffi.NULL,  free_cbk=ffi.NULL,
+            flags=lib.ARGON2_DEFAULT_FLAGS,
+        )
+    )
+ 
+   core(ctx, Type.ID.value)
+   out = bytes(ffi.buffer(ctx.out, ctx.outlen))
+   return (binascii.hexlify(out).decode("utf-8"))
+
 
    
   # Randomize number each time for genesis_block
