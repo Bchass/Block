@@ -1,10 +1,9 @@
-import json, hashlib, random, requests, binascii, os
+import json, hashlib, random, requests, binascii, os, secrets, string
 from time import time
 from uuid import uuid4
 from flask import Flask
 from api import blockchain_blueprint
 from argon2.low_level import ARGON2_VERSION, Type, core, ffi, lib
-
 
 #TODO: Major: N/A, Minor: Validate proof with Argon2
 '''
@@ -22,14 +21,17 @@ app.register_blueprint(blockchain_blueprint)
 node_identifer = str(uuid4()).replace('-','')
 
 class Block:
+  
+  # Generate secured salts of 128 bits
+  def salt_gen(size=128, chars=string.ascii_lowercase + string.digits):
+    return ''.join(random.SystemRandom().choice(chars) for _ in range(size))
 
   # Working off raw C data structures
   @staticmethod
   def hash(block):
    block_string = json.dumps(block,sort_keys=True).encode()
    pwd = block_string
-   size = random.randint(64,128)
-   salt = os.urandom(size)
+   salt = Block.salt_gen().encode()
    hash_len = 16
 
    cout = ffi.new("uint8_t[]",hash_len)
@@ -54,7 +56,7 @@ class Block:
    core(ctx, Type.ID.value)
    out = bytes(ffi.buffer(ctx.out, ctx.outlen))
    return (binascii.hexlify(out).decode("utf-8"))
-
+   print(salt)
 
    
   # Randomize number each time for genesis_block
