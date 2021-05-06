@@ -1,8 +1,9 @@
-import json, hashlib, random, requests, binascii, os, secrets, string
+import json, hashlib, random, requests, binascii, os, secrets, string, math
 from time import time
 from uuid import uuid4
 from flask import Flask
 from api import blockchain_blueprint
+from passlib.hash import argon2
 from argon2.low_level import ARGON2_VERSION, Type, core, ffi, lib
 
 #TODO: Major: N/A, Minor: Validate proof with Argon2
@@ -45,9 +46,9 @@ class Block:
             salt=csalt, saltlen=len(salt),
             secret=ffi.NULL,  secretlen=0,
             ad=ffi.NULL,  adlen=0,
-            t_cost=2,
-            m_cost=512,
-            lanes=1,  threads=1,
+            t_cost=12,
+            m_cost=64,
+            lanes=8,  threads=8,
             allocate_cbk=ffi.NULL,  free_cbk=ffi.NULL,
             flags=lib.ARGON2_DEFAULT_FLAGS,
         )
@@ -56,8 +57,6 @@ class Block:
    core(ctx, Type.ID.value)
    out = bytes(ffi.buffer(ctx.out, ctx.outlen))
    return (binascii.hexlify(out).decode("utf-8"))
-   print(salt)
-
    
   # Randomize number each time for genesis_block
   genesis_block = random.randint(0,99999)
@@ -128,7 +127,8 @@ class Blockchain:
   def valid_proof(last_proof,proof,last_hash):
     guess = '{0}{1}{2}'.format(last_proof,proof,last_hash).encode()
     guess_hash = hashlib.sha256(guess).hexdigest()
-    return guess_hash[:4]== "0000"
+    #guess_hash = argon2.hash(guess).encode() 
+    return guess_hash[:4]=="0000"
 
      # Create a new block when mined  
   def create_block(self,proof,previous_hash):
