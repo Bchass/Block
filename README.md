@@ -30,9 +30,6 @@ new_layout contains a cleaned up space with no more bugs present
 - Processor: 1.4 Ghz Quad-Core Intel Core i5
 - Memory: 8GB @ 2133 MHz
 
-Results:
--  hash_len: 16 bytes
--  memory_cost: 512 KiB
--  parallelism: 1 threads
--  time_cost: 2 iterations
--  0.52ms for hashing
+Benchmarks:
+
+![Screenshot](images/Benchmarks.png)
