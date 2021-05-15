@@ -50,7 +50,7 @@ def transacation():
   response = {'message: Transaction being added to Block {}'.format(index)}
   return jsonify(response),201
 
-'''
+
 @blockchain_blueprint.route('/nodes/register',methods=['POST'])
 def register_nodes():
   values = request.get_json(force=True)
@@ -60,14 +60,14 @@ def register_nodes():
     return "Error: Need a valid list of nodes", 400
 
   for node in nodes:
-    blockchain.bc.new_node(node)
+    blockchain.register_nodes(node)
 
   response = {
     'message': 'Nodes have been added',
     'Total': list(blockchain.bc.nodes),
   }
   return jsonify(response), 201
-'''
+
 
 # Resolve any conflicts with a chain
 @blockchain_blueprint.route('/nodes/resolve', methods=['GET'])

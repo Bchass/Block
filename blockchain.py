@@ -6,7 +6,7 @@ from api import blockchain_blueprint
 from passlib.hash import argon2
 from argon2.low_level import ARGON2_VERSION, Type, core, ffi, lib
 
-#TODO: Major: N/A, Minor: Validate proof with Argon2
+#TODO: Major: N/A, Minor: Figure out adding new nodes
 '''
 Proof algorithm:
 - find a number that is p, such that hash(pp) has 4 leading zeros and where p is the previous p
@@ -111,7 +111,7 @@ class Blockchain:
         self.chain = new_chain
         return True
       return False
-  '''
+  
   # Add new nodes
   def new_node(self, address):
     parsed_url = urlparse(address)
@@ -121,13 +121,12 @@ class Blockchain:
       self.nodes.add(parsed_url.path)
     else:
       raise ValueError('Invalid url')
-  '''
+  
   # Validate the proof
   @staticmethod
   def valid_proof(last_proof,proof,last_hash):
     guess = '{0}{1}{2}'.format(last_proof,proof,last_hash).encode()
     guess_hash = hashlib.sha256(guess).hexdigest()
-    #guess_hash = argon2.hash(guess).encode() 
     return guess_hash[:4]=="0000"
 
      # Create a new block when mined  
