@@ -6,7 +6,6 @@ from api import blockchain_blueprint
 from passlib.hash import argon2
 from argon2.low_level import ARGON2_VERSION, Type, core, ffi, lib
 
-#TODO: Major: N/A, Minor: Figure out adding new nodes
 '''
 Proof algorithm:
 - find a number that is p, such that hash(pp) has 4 leading zeros and where p is the previous p
