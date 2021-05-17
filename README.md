@@ -18,10 +18,10 @@ new_layout contains a cleaned up space with no more bugs present
 - Calling the chain: `curl http://127.0.0.1:5000/chain`
 - Mining a block: `curl http://127.0.0.1:5000/mine`
 - Creating new nodes: `curl http://127.0.0.1:5000/nodes/register` (requires separate device or run script on different port)
-- Adding a transaction: `curl -X POST -H "Content-Type: application/json" -d '{
+- Adding a transaction (Doesn't work with Argon2): `curl -X POST -H "Content-Type: application/json" -d '{
  "sender": "Enter address",
  "recipient": "Enter address", 
- "amount": 5
+ "amount": 5 
 }' "http://localhost:5000/transactions/new"`
 - Resolve conflicts: `curl http://127.0.0.1:5000/nodes/resolve`
 
