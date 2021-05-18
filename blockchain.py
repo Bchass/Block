@@ -2,6 +2,7 @@ import json, hashlib, random, requests, binascii, string, argon2
 from time import time
 from uuid import uuid4
 from flask import Flask
+from urllib.parse import urlparse
 from api import blockchain_blueprint
 '''
 Proof algorithm:
