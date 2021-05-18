@@ -1,11 +1,8 @@
-import json, hashlib, random, requests, binascii, os, secrets, string, math
+import json, hashlib, random, requests, binascii, string, argon2
 from time import time
 from uuid import uuid4
 from flask import Flask
 from api import blockchain_blueprint
-from passlib.hash import argon2
-from argon2.low_level import ARGON2_VERSION, Type, core, ffi, lib
-
 '''
 Proof algorithm:
 - find a number that is p, such that hash(pp) has 4 leading zeros and where p is the previous p
@@ -26,37 +23,17 @@ class Block:
   def salt_gen(size=128, chars=string.ascii_lowercase + string.digits):
     return ''.join(random.SystemRandom().choice(chars) for _ in range(size))
 
-  # Working off raw C data structures
+  # hash
   @staticmethod
   def hash(block):
    block_string = json.dumps(block,sort_keys=True).encode()
-   pwd = block_string
-   salt = Block.salt_gen().encode()
-   hash_len = 16
-
-   cout = ffi.new("uint8_t[]",hash_len)
-   cpwd = ffi.new("uint8_t[]",pwd)
-   csalt = ffi.new("uint8_t[]",salt)
-   ctx = ffi.new(
-      "argon2_context *",dict(
-      version=ARGON2_VERSION,
-      out=cout, outlen=hash_len,
-            pwd=cpwd, pwdlen=len(pwd),
-            salt=csalt, saltlen=len(salt),
-            secret=ffi.NULL,  secretlen=0,
-            ad=ffi.NULL,  adlen=0,
-            t_cost=12,
-            m_cost=64,
-            lanes=8,  threads=8,
-            allocate_cbk=ffi.NULL,  free_cbk=ffi.NULL,
-            flags=lib.ARGON2_DEFAULT_FLAGS,
-        )
-    )
- 
-   core(ctx, Type.ID.value)
-   out = bytes(ffi.buffer(ctx.out, ctx.outlen))
-   return (binascii.hexlify(out).decode("utf-8"))
+   a2 = argon2.hash_password_raw(
+        time_cost=12, memory_cost=64, parallelism=8, hash_len=16, type=argon2.low_level.Type.ID,
+        password=block_string, salt=Block.salt_gen().encode()
+   )
+   return (binascii.hexlify(a2).decode("utf-8","ignore"))
    
+
   # Randomize number each time for genesis_block
   genesis_block = random.randint(0,99999)
 
