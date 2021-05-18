@@ -40,3 +40,5 @@ tests/test_blockchain.py
 tests/.test_blockchain.py.swp
 r.py
 .r.py.swp
+.r.py.swo
+.blockchain.py.swn
