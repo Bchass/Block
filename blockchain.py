@@ -30,10 +30,9 @@ class Block:
    block_string = json.dumps(block,sort_keys=True).encode()
    a2 = argon2.hash_password_raw(
         time_cost=12, memory_cost=64, parallelism=8, hash_len=16, type=argon2.low_level.Type.ID,
-        password=block_string, salt=Block.salt_gen().encode()
+        password=block_string, salt=b'some salt'
    )
-   return (binascii.hexlify(a2).decode("utf-8","ignore"))
-   
+   return (binascii.hexlify(a2).decode("utf-8","ignore")) 
 
   # Randomize number each time for genesis_block
   genesis_block = random.randint(0,99999)
@@ -57,10 +56,11 @@ class Blockchain:
       print('{}'.format(last_block))
       print('{}'.format(block))
       # Check hash of block
-      if block['previous_hash'] != self.hash(last_block):
+      LBH = self.hash(last_block)
+      if block['previous_hash'] != LBH:
         return False
       # Check PoW
-      if not self.valid_proof(last_block['proof'], block['proof'], block['previous_hash']):
+      if not self.valid_proof(last_block['proof'], block['proof'], block['previous_hash'],LBH):
         return False
 
       last_block = block
