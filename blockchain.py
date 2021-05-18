@@ -30,7 +30,7 @@ class Block:
    block_string = json.dumps(block,sort_keys=True).encode()
    a2 = argon2.hash_password_raw(
         time_cost=12, memory_cost=64, parallelism=8, hash_len=16, type=argon2.low_level.Type.ID,
-        password=block_string, salt=b'some salt'
+        password=block_string, salt=Block.salt_gen().encode()
    )
    return (binascii.hexlify(a2).decode("utf-8","ignore")) 
 
