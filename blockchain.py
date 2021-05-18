@@ -4,14 +4,6 @@ from uuid import uuid4
 from flask import Flask
 from urllib.parse import urlparse
 from api import blockchain_blueprint
-'''
-Proof algorithm:
-- find a number that is p, such that hash(pp) has 4 leading zeros and where p is the previous p
-- p represents the previous proof, also p is considered the new proof
-'''
-# Help me get started: 
-# https://hackernoon.com/learn-blockchains-by-building-one-117428612f46 (Improving slowly upon this)
-# https://www.activestate.com/blog/how-to-build-a-blockchain-in-python/
 
 app = Flask(__name__)
 app.register_blueprint(blockchain_blueprint)
