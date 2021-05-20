@@ -104,8 +104,7 @@ class Blockchain:
     time_stamp = time()
     TS = datetime.datetime.fromtimestamp(time_stamp)
     block = {
-      'index':len(self.chain)+1,
-      #'timestamp':dt.dt.fromtimestamp(TS),
+      'index':len(self.chain)+1, 
       'timestamp':TS.strftime("%Y-%m-%d, %H:%M:%S"),
       'transactions':self.current_transactions,
       'proof':proof,
