@@ -1,8 +1,6 @@
 import blockchain
 from flask import Blueprint, jsonify, request
 
-#TODO: Figure out why regestring a node is throwing 405
-
 blockchain_blueprint = Blueprint('blockchain_blueprint',__name__)
 
 # Call the chain
