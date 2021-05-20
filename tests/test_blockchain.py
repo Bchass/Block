@@ -25,13 +25,13 @@ class TestBlock(BlockchainTestCase):
         self.test_new_block()
         self.blockchain = bc
         Lblock = self.blockchain.last_block
-        
+                
         #TODO: Figure out previous_hash for Argon2
-        assert len(self.blockchain.chain) == len(self.blockchain.chain)
+        assert len(self.blockchain.chain) == 3 
         assert Lblock['index'] == len(self.blockchain.chain)
         assert Lblock['timestamp'] != 0
         assert Lblock['proof'] == 1234
-        assert Lblock['previous_hash'] == 'xyz'
+        assert Lblock['previous_hash'] == 0
 
     def test_new_transactions(self):
         self.test_transactions()
