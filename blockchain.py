@@ -4,6 +4,7 @@ from uuid import uuid4
 from flask import Flask
 from urllib.parse import urlparse
 from api import blockchain_blueprint
+import datetime
 
 app = Flask(__name__)
 app.register_blueprint(blockchain_blueprint)
@@ -100,9 +101,12 @@ class Blockchain:
 
      # Create a new block when mined  
   def create_block(self,proof,previous_hash):
+    time_stamp = time()
+    TS = datetime.datetime.fromtimestamp(time_stamp)
     block = {
       'index':len(self.chain)+1,
-      'timestamp':time(),
+      #'timestamp':dt.dt.fromtimestamp(TS),
+      'timestamp':TS.strftime("%Y-%m-%d, %H:%M:%S"),
       'transactions':self.current_transactions,
       'proof':proof,
       'previous_hash':Block.hash(previous_hash) or self.hash(self.chain[-1]),
