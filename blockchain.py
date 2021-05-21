@@ -1,18 +1,8 @@
-import json, hashlib, random, requests, binascii, string, argon2
+import json, hashlib, random, requests, binascii, string, argon2, datetime
 from time import time
-from uuid import uuid4
-from flask import Flask
 from urllib.parse import urlparse
-from api import blockchain_blueprint
-import datetime
-
-app = Flask(__name__)
-app.register_blueprint(blockchain_blueprint)
-
-node_identifer = str(uuid4()).replace('-','')
 
 class Block:
-  
   # Generate secured salts of 128 bits
   def salt_gen(size=128, chars=string.ascii_lowercase + string.digits):
     return ''.join(random.SystemRandom().choice(chars) for _ in range(size))
@@ -139,7 +129,3 @@ class Blockchain:
   @property
   def last_block(self):
     return self.chain[-1]
-          
-# Classes assigned to vars
-bc = Blockchain()
-block = Block()
