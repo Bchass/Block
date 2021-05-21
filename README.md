@@ -16,10 +16,6 @@ Blockchain has been getting a lot of popularity lately as people see it as the "
 - Flask
 
 -----
-### Executing the Blockchain
-1. `export FLASK_APP=blockchain.py`
-2. `flask run`
------
 ### Interacting with the Blockchain
 
 - Calling the chain: `curl http://127.0.0.1:5000/chain`
@@ -42,11 +38,20 @@ Blockchain has been getting a lot of popularity lately as people see it as the "
 - Memory: 8GB @ 2133 MHz
 
 Benchmarks:
-
-![Screenshot](images/Benchmarks.png)
+```
+Best results:
+M = 256 MB, T = 3, d = 16, Time = 0.946 s
+M = 128 MB, T = 6, d = 16, Time = 0.96 s
+M = 64 MB, T = 12, d = 16, Time = 0.902 s
+M = 32 MB, T = 27, d = 16, Time = 1 s
+M = 16 MB, T = 53, d = 16, Time = 0.999 s
+M = 8 MB, T = 108, d = 16, Time = 0.993 s
+M = 4 MB, T = 208, d = 16, Time = 0.989 s
+M = 2 MB, T = 440, d = 16, Time = 0.996 s
+M = 1 MB, T = 1024, d = 16, Time = 0.989 s
+```
 
 -----
 ### Acknowledgments
 - Tutorials: 
    - https://hackernoon.com/learn-blockchains-by-building-one-117428612f46
-   - https://www.activestate.com/blog/how-to-build-a-blockchain-in-python/
