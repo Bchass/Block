@@ -44,3 +44,6 @@ r.py
 .blockchain.py.swn
 .blockchain.py.swm
 .vscode/settings.json
+.db.py.swp
+__pycache__/api.cpython-39.pyc
+__pycache__/blockchain.cpython-39.pyc
