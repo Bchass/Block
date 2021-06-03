@@ -1,11 +1,24 @@
+#from binascii import Error
 from flask import Flask, jsonify, request
 from blockchain import Blockchain
+from blockchain import Block
 from uuid import uuid4
+#import sqlite3
 
 app = Flask(__name__)
 node_identifer = str(uuid4()).replace("-", "")
 
 blockchain = Blockchain()
+'''
+def create_connection():
+    conn = None
+    try:
+      conn = sqlite3.connect('Blockchain.sqlite')
+      return conn
+    except Error as e:
+      print(e)
+    return None
+'''
 
 # Call the chain
 @app.route("/chain", methods=["GET"])
@@ -13,17 +26,15 @@ def get_chain():
     respone = {"chain": blockchain.chain, "length": len(blockchain.chain)}
     return jsonify(respone), 200
 
-
 # Mine a block
 @app.route("/mine", methods=["GET"])
 def mine_block():
     last_block = blockchain.last_block
-    proof = blockchain.Blockchain().PoW(last_block)
-
-    blockchain.Blockchain().new_transactions(
+    proof = blockchain.PoW(last_block)
+    blockchain.new_transactions(
         sender="0", recipient=node_identifer, amount=1
     )
-    previous_hash = blockchain.hash(last_block)
+    previous_hash = Block.hash(last_block)
     block = blockchain.create_block(proof, previous_hash)
 
     response = {
