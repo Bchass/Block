@@ -1,7 +1,7 @@
 import json, hashlib, random, requests, binascii, string, argon2, datetime
 from time import time
 from urllib.parse import urlparse
-
+from transaction import Transaction
 
 class Block:
     # Generate secured salts of 128 bits
@@ -34,7 +34,7 @@ class Blockchain:
         self.nodes = set()
 
         # This is how the proof is determined from calling create_block
-        self.create_block(previous_hash=Block.genesis_block, proof=100)
+        self.create_block(previous_hash=Block.genesis_block, proof=100, miner=1)
 
     # Check to make sure the current chain is accurate
     def validate_chain(self, chain):
@@ -51,7 +51,7 @@ class Blockchain:
                 return False
             # Check PoW
             if not self.valid_proof(
-                last_block["proof"], block["proof"], block["previous_hash"], LBH
+                last_block["proof"], block["proof"], block["previous_hash"], LBH, block["miner"],
             ):
                 return False
 
@@ -97,14 +97,14 @@ class Blockchain:
 
     # Validate the proof
     @staticmethod
-    def valid_proof(last_proof, proof, last_hash):
-        guess = "{0}{1}{2}".format(last_proof, proof, last_hash).encode()
+    def valid_proof(last_proof, proof, last_hash, miner_key):
+        guess = "{0}{1}{2}".format(last_proof, proof, last_hash, miner_key).encode()
         guess_hash = hashlib.sha256(guess).hexdigest()
         return guess_hash[:4] == "0000"
 
         # Create a new block when mined
 
-    def create_block(self, proof, previous_hash):
+    def create_block(self, proof, previous_hash, miner):
         time_stamp = time()
         TS = datetime.datetime.fromtimestamp(time_stamp)
         block = {
@@ -113,6 +113,7 @@ class Blockchain:
             "transactions": self.current_transactions,
             "proof": proof,
             "previous_hash": Block.hash(previous_hash) or self.hash(self.chain[-1]),
+            "miner": miner
         }
 
         self.current_transactions = []
@@ -121,24 +122,21 @@ class Blockchain:
 
         # Proof algo, explained at the top
 
-    def PoW(self, last_block):
+    def PoW(self, last_block, miner_key):
         last_proof = last_block["proof"]
         last_hash = Block.hash(last_block)
 
         proof = 0
-        while self.valid_proof(last_proof, proof, last_hash) is False:
+        while self.valid_proof(last_proof, proof, last_hash, miner_key) is False:
             proof += 1
         return proof
 
     # Create new transactions, this still needs to be implemented
-    def new_transactions(self, sender, recipient, amount):
-        self.current_transactions.append(
-            {
-                "sender": sender,
-                "recipient": recipient,
-                "amount": amount,
-            }
-        )
+    def new_transactions(self, sender, recipient, amount, signature):
+        transaction = Transaction(sender,recipient,amount,signature)
+        if transaction.verified_signature() is False:
+             raise ValueError("Invalid Signature")
+        self.current_transactions.append(transaction._dict())
 
         return self.last_block["index"] + 1
 

@@ -1,24 +1,20 @@
-#from binascii import Error
 from flask import Flask, jsonify, request
 from blockchain import Blockchain
 from blockchain import Block
+from os import urandom
 from uuid import uuid4
-#import sqlite3
+import ecdsa as EC
+
+
 
 app = Flask(__name__)
-node_identifer = str(uuid4()).replace("-", "")
+
+secret = int.from_bytes(urandom(16), byteorder='little')
+private = EC.SigningKey.from_secret_exponent(secret)
+public = private.get_verifying_key()
+node_identifier = str(uuid4()).replace('-', '')
 
 blockchain = Blockchain()
-'''
-def create_connection():
-    conn = None
-    try:
-      conn = sqlite3.connect('Blockchain.sqlite')
-      return conn
-    except Error as e:
-      print(e)
-    return None
-'''
 
 # Call the chain
 @app.route("/chain", methods=["GET"])
@@ -30,12 +26,14 @@ def get_chain():
 @app.route("/mine", methods=["GET"])
 def mine_block():
     last_block = blockchain.last_block
-    proof = blockchain.PoW(last_block)
+    proof = blockchain.PoW(last_block, node_identifier)
+    '''
     blockchain.new_transactions(
         sender="0", recipient=node_identifer, amount=1
     )
+    '''
     previous_hash = Block.hash(last_block)
-    block = blockchain.create_block(proof, previous_hash)
+    block = blockchain.create_block(proof, previous_hash, node_identifier)
 
     response = {
         "message": "New Block Mined",
@@ -43,6 +41,7 @@ def mine_block():
         "transactions": block["transactions"],
         "proof": block["proof"],
         "previous_hash": block["previous_hash"],
+        "miner": block['miner']
     }
     return jsonify(response), 200
 
@@ -52,13 +51,14 @@ def mine_block():
 def transacation():
     values = request.get_json(force=True)
 
-    required = ["sender", "recipient", "amount"]
+    required = ["sender", "recipient", "amount", "signature"]
     if not all(x in values for x in required):
         return "Missing values", 400
-
-    index = blockchain.new_transactions(
-        values["sender"], values["recipient"], values["amount"]
-    )
+    try:
+        index = blockchain.new_transactions(
+            values["sender"], values["recipient"], values["amount"], values["signature"])
+    except ValueError:
+        return "Invalid Signaute", 400
     response = {"message": f"Transaction being added to Block {index}"}
     return jsonify(response), 201
 
