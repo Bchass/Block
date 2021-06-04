@@ -34,7 +34,7 @@ class Blockchain:
         self.nodes = set()
 
         # This is how the proof is determined from calling create_block
-        self.create_block(previous_hash=Block.genesis_block, proof=100, miner=1)
+        self.create_block(previous_hash=Block.genesis_block, proof=100, miner=Block.hash(block=1))
 
     # Check to make sure the current chain is accurate
     def validate_chain(self, chain):
