@@ -33,8 +33,9 @@ class Blockchain:
         self.current_transactions = []
         self.nodes = set()
 
+
         # This is how the proof is determined from calling create_block
-        self.create_block(previous_hash=Block.genesis_block, proof=100, miner=Block.hash(block=1))
+        self.create_block(previous_hash=Block.genesis_block, proof=100, miner='')
 
     # Check to make sure the current chain is accurate
     def validate_chain(self, chain):
@@ -98,7 +99,7 @@ class Blockchain:
     # Validate the proof
     @staticmethod
     def valid_proof(last_proof, proof, last_hash, miner_key):
-        guess = "{0}{1}{2}".format(last_proof, proof, last_hash, miner_key).encode()
+        guess = f'{last_proof}{proof}{last_hash}{miner_key}'.encode()
         guess_hash = hashlib.sha256(guess).hexdigest()
         return guess_hash[:4] == "0000"
 
@@ -136,7 +137,7 @@ class Blockchain:
         transaction = Transaction(sender,recipient,amount,signature)
         if transaction.verified_signature() is False:
              raise ValueError("Invalid Signature")
-        self.current_transactions.append(transaction._dict())
+        self.current_transactions.append(transaction.to_dict())
 
         return self.last_block["index"] + 1
 
