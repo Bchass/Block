@@ -49,3 +49,4 @@ __pycache__/api.cpython-39.pyc
 __pycache__/blockchain.cpython-39.pyc
 api.py
 .transactions.py.swp
+tests/.test_blockchain.py.swo
