@@ -7,7 +7,7 @@ class Transaction:
         self.amount = amount
         self.signature = signature
 
-    def _dict(self):
+    def to_dict(self):
         return {
             "sender": self.sender,
             "recipient": self.recipient,
