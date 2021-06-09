@@ -3,16 +3,19 @@ from blockchain import Blockchain
 from blockchain import Block
 from os import urandom
 from uuid import uuid4
-import ecdsa as EC
-
+from ecdsa import SigningKey
+import binascii
 
 
 app = Flask(__name__)
-
+#TODO: Fix ecdsa
+'''
 secret = int.from_bytes(urandom(16), byteorder='little')
-private = EC.SigningKey.from_secret_exponent(secret)
+private = SigningKey.from_secret_exponent(secret)
 public = private.get_verifying_key()
-node_identifier = str(uuid4()).replace('-', '')
+node_identifier = public.to_string()
+'''
+node_identifier = str(uuid4()).replace('-','')
 
 blockchain = Blockchain()
 
@@ -27,11 +30,6 @@ def get_chain():
 def mine_block():
     last_block = blockchain.last_block
     proof = blockchain.PoW(last_block, node_identifier)
-    '''
-    blockchain.new_transactions(
-        sender="0", recipient=node_identifer, amount=1
-    )
-    '''
     previous_hash = Block.hash(last_block)
     block = blockchain.create_block(proof, previous_hash, node_identifier)
 
@@ -41,9 +39,10 @@ def mine_block():
         "transactions": block["transactions"],
         "proof": block["proof"],
         "previous_hash": block["previous_hash"],
-        "miner": block['miner']
+        "miner": block["miner"]
     }
     return jsonify(response), 200
+    #return binascii.hexlify(response).decode("utf-8"), 200
 
 
 # Retrieve all the transactions that have taken place
