@@ -2,20 +2,14 @@ from flask import Flask, jsonify, request
 from blockchain import Blockchain
 from blockchain import Block
 from os import urandom
-from uuid import uuid4
 from ecdsa import SigningKey
-import binascii
-
 
 app = Flask(__name__)
-#TODO: Fix ecdsa
-'''
+
 secret = int.from_bytes(urandom(16), byteorder='little')
 private = SigningKey.from_secret_exponent(secret)
 public = private.get_verifying_key()
-node_identifier = public.to_string()
-'''
-node_identifier = str(uuid4()).replace('-','')
+node_identifier = public.to_string().decode("utf-8","ignore")
 
 blockchain = Blockchain()
 
@@ -42,8 +36,6 @@ def mine_block():
         "miner": block["miner"]
     }
     return jsonify(response), 200
-    #return binascii.hexlify(response).decode("utf-8"), 200
-
 
 # Retrieve all the transactions that have taken place
 @app.route("/transactions/new", methods=["POST"])
