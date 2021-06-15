@@ -103,8 +103,11 @@ class Blockchain:
         guess_hash = hashlib.sha256(guess).hexdigest()
         return guess_hash[:4] == "0000"
 
-        # Create a new block when mined
-
+    # Create a new block when mined
+    '''
+    miner can simulate different miners by using argon2 to hash the ID
+    need to hash the miner ID so node_identifier prints properly
+    '''
     def create_block(self, proof, previous_hash, miner):
         time_stamp = time()
         TS = datetime.datetime.fromtimestamp(time_stamp)
@@ -114,7 +117,8 @@ class Blockchain:
             "transactions": self.current_transactions,
             "proof": proof,
             "previous_hash": Block.hash(previous_hash) or self.hash(self.chain[-1]),
-            "miner": miner
+            "miner": Block.hash(miner)
+            #"miner": Block.hash(miner)
         }
 
         self.current_transactions = []
