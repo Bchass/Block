@@ -62,3 +62,6 @@ tmux-client-81918.log
 .blockchain.py.swi
 .blockchain.py.swl
 .api.py.swn
+.api.py.swm
+.gitignore
+.blockchain.py.swg
