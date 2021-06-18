@@ -23,9 +23,9 @@ def get_chain():
 @app.route("/mine", methods=["GET"])
 def mine_block():
     last_block = blockchain.last_block
-    proof = blockchain.PoW(last_block, node_identifier)
+    proof = blockchain.PoW(last_block, public.to_string())
     previous_hash = Block.hash(last_block)
-    block = blockchain.create_block(proof, previous_hash, node_identifier)
+    block = blockchain.create_block(proof, previous_hash, public.to_string())
 
     response = {
         "message": "New Block Mined",
