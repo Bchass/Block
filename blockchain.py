@@ -1,4 +1,5 @@
 import json, hashlib, random, requests, binascii, string, argon2, datetime
+from base64 import b64encode
 from time import time
 from urllib.parse import urlparse
 from transaction import Transaction
@@ -35,7 +36,7 @@ class Blockchain:
 
 
         # This is how the proof is determined from calling create_block
-        self.create_block(previous_hash=Block.genesis_block, proof=100, miner='')
+        self.create_block(previous_hash=Block.genesis_block, proof=100, miner=b'')
 
     # Check to make sure the current chain is accurate
     def validate_chain(self, chain):
@@ -117,8 +118,7 @@ class Blockchain:
             "transactions": self.current_transactions,
             "proof": proof,
             "previous_hash": Block.hash(previous_hash) or self.hash(self.chain[-1]),
-            "miner": Block.hash(miner)
-            #"miner": Block.hash(miner)
+            "miner": b64encode(miner).decode()
         }
 
         self.current_transactions = []
