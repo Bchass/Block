@@ -2,12 +2,13 @@ from flask import Flask, jsonify, request
 from blockchain import Blockchain
 from blockchain import Block
 from os import urandom
-from ecdsa import SigningKey
+from ecdsa import SigningKey, NIST192p
 
 app = Flask(__name__)
 
-secret = int.from_bytes(urandom(16), byteorder='little')
-private = SigningKey.from_secret_exponent(secret)
+sk = SigningKey.generate(curve=NIST192p)
+sk_string = sk.to_string()
+private = SigningKey.from_string(sk_string, curve=NIST192p)
 public = private.get_verifying_key()
 node_identifier = public.to_string().decode("utf-8","ignore")
 
